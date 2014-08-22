@@ -39,9 +39,10 @@ for (var i = 0; i < pInventory.length; i++)
 {
 	console.log(pInventory[i]);
 }
+console.log(displayGoblinInfo());
+
 
 //Display player info
-
 function displayPlayerInfo()
 {
 	var pInfo = "Name: " + pName + " " + pTitle + "\nHealth: " + pHealth;
@@ -70,4 +71,35 @@ function displayPlayerInfo()
 		}
 	}
 	return pInfo;
+}
+
+//Display goblin info
+function displayGoblinInfo()
+{
+	var eInfo = "Name: " + eName + " " + eTitle + "\nHealth: " + eHealth;
+	
+	if (eHealth == 100)
+	{
+		eInfo += "\nThe goblin you are fighting looks like he's ready to kick some shin!";
+	}
+	else if (eHealth < 80 && eHealth > 60)
+	{
+		eInfo += "\nYour opponent looks like he might bleed to death, but probably only after he's killed you.";
+	}
+	else if (eHealth < 60 && eHealth > 20)
+	{
+		eInfo += "\n" + eName + " " + eTitle + " staggers from blood loss and probably because he's been drinking even as he's fighting you.";
+	}
+	else if (eHealth < 20)
+	{
+		if(eHealth < pHealth)
+		{
+			eInfo += "\nThe goblin just isn't going to give up, even if he's missing everything below his torso.";
+		}
+		else
+		{
+			eInfo += "\nYou may have decapitated him, but it looks like he's going to bite you to death. You should probably run, I mean hobble.";
+		}
+	}
+	return eInfo;
 }
