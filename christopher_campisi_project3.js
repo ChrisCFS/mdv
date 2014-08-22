@@ -18,9 +18,9 @@ document.getElementById("completion").innerHTML =
 //Declare Global Variables
 
 //player information
-var pHealth = 19;
+var pHealth = 100;
 var pDamage = 8; //up to 8 damage per hit
-var pAttacksPerTurn = 2; //2 attacks per turn
+var pAttackRate = 2; //2 attacks per turn
 var pName = "Grognak";
 var pTitle = "the Destroyer";
 var pInventory = ["Torch", "Rope", "Canteen"];
@@ -28,19 +28,57 @@ var pInventory = ["Torch", "Rope", "Canteen"];
 //Goblin Information
 var eName = "Grinklestein";
 var eTitle = "the Destroyed";
-var eAttacksPerTurn = 4;
+var eAttackRate = 4;
 var eDamage = 3;
-var	eHealth = 15;
+var	eHealth = 100;
 
+var playGame;
+var message = "Do you want to play a game?";
 
-console.log(displayPlayerInfo());
-console.log("Items in your inventory are: ");
-for (var i = 0; i < pInventory.length; i++)
+playGame = prompt(message);
+while (playGame != "yes" && playGame != "Yes" && playGame != "no" && playGame != "No")
 {
-	console.log(pInventory[i]);
+	playGame = prompt("Invalid response, try again. " + message);
+	console.log(playGame);
 }
-console.log(displayGoblinInfo());
+playGame = boolPlayGame(playGame);
 
+while(playGame == true)
+{
+	while(pHealth > 0 && eHealth > 0)
+	{
+		console.log(displayPlayerInfo());
+		console.log("Items in your inventory are: ");
+		for (var i = 0; i < pInventory.length; i++)
+		{
+			console.log(pInventory[i]);
+		}
+		console.log(displayGoblinInfo());
+		console.log("--------------------------------------");
+		//player attacks
+		eHealth = attack(pDamage, pAttackRate, eHealth);
+		console.log("You strike the enemy reducing them to: " + eHealth + " life!");
+
+		//goblin attacks
+		pHealth = attack(eDamage, eAttackRate, pHealth);
+		console.log("The goblin hits you, dropping your life to " + pHealth + "!");
+
+		console.log("--------------------------------------");
+	}
+		if(pHealth >= 0 && eHealth >= 0)
+		{
+			console.log("If its at all possible to have a tie in such a battle, you both decapitate each other and die. Congrats you're not the only loser!");
+		}
+		else if (pHealth > 0)
+		{
+			console.log("You have a hard time separating the goblin's head from  your sword. Good job! But clean up the mess.");
+		}
+		else 
+		{
+			console.log("The goblin doesn't kill you. He just wanted a friend. So he severs your limbs and pulls you around on a cart everywhere he goes.");
+		}
+		playGame = boolPlayGame(playGame);
+}
 
 //Display player info
 function displayPlayerInfo()
@@ -102,4 +140,30 @@ function displayGoblinInfo()
 		}
 	}
 	return eInfo;
+}
+
+function attack(damage, attackRate, health)
+{
+	var attackDamage = 0; 
+	for (var i = 0; i < attackRate; i++)
+	{
+		attackDamage += Math.floor((Math.random() * damage) + 1); 
+		// testing condition console.log(attackDamage);
+	}
+	health -= attackDamage;
+	return health;
+}
+
+function boolPlayGame(response)
+{
+	if(response == "yes" || response == "Yes")
+	{
+		// testing condition console.log("Yes");
+		return true;
+	}
+	else
+	{
+		// testing condition console.log("no");
+		return false
+	}
 }
